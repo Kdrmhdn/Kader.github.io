@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kader — Fullstack Developer & Cybersecurity Enthusiast</title>
+    <meta name="description" content="Portfolio of Kader — Fullstack Developer specializing in Next.js, Nest.js, TypeScript, Data Science, and Cybersecurity. Building robust digital experiences and securing them.">
+    <meta name="keywords" content="Fullstack Developer, Cybersecurity, Pentesting, Next.js, TypeScript, Portfolio, Data Science">
+    <meta name="author" content="Kader">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Kader — Fullstack Developer & Cybersecurity Enthusiast">
+    <meta property="og:description" content="Building robust digital experiences by day. Breaking them apart by night.">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Floating Navigation -->
+    <nav class="floating-nav" id="floating-nav">
+        <div class="nav-inner">
+            <a href="#hero" class="nav-logo">K<span class="accent">.</span></a>
+            <div class="nav-links">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#education" class="nav-link">Education</a>
+                <a href="#connect" class="nav-link nav-link-cta">Let's Talk</a>
+            </div>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#skills" class="mobile-link">Skills</a>
+        <a href="#experience" class="mobile-link">Experience</a>
+        <a href="#projects" class="mobile-link">Projects</a>
+        <a href="#education" class="mobile-link">Education</a>
+        <a href="#connect" class="mobile-link">Let's Connect</a>
+    </div>
+
+    <!-- Animated Background Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge" data-animate="fade-up">
+                <span class="badge-dot"></span>
+                Available for opportunities
+            </div>
+            <h1 data-animate="fade-up" data-delay="100">
+                Hi, I'm <span class="gradient-text">Kader</span>
+            </h1>
+            <p class="hero-subtitle" data-animate="fade-up" data-delay="200">
+                <span class="typed-text" id="typed-text"></span><span class="cursor">|</span>
+            </p>
+            <p class="hero-description" data-animate="fade-up" data-delay="300">
+                Building robust digital experiences by day.<br>
+                Breaking them apart by night.
+            </p>
+            <div class="hero-actions" data-animate="fade-up" data-delay="400">
+                <a href="#projects" class="btn btn-primary">
+                    <i class="ph ph-rocket-launch"></i>
+                    View My Work
+                </a>
+                <a href="#connect" class="btn btn-outline">
+                    <i class="ph ph-envelope-simple"></i>
+                    Get in Touch
+                </a>
+            </div>
+            <div class="hero-stats" data-animate="fade-up" data-delay="500">
+                <div class="stat">
+                    <span class="stat-number" data-count="3">0</span><span class="stat-plus">+</span>
+                    <span class="stat-label">Years Experience</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-count="15">0</span><span class="stat-plus">+</span>
+                    <span class="stat-label">Projects Completed</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-count="20">0</span><span class="stat-plus">+</span>
+                    <span class="stat-label">CTFs Played</span>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator" data-animate="fade-up" data-delay="600">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span>Scroll to explore</span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag"><i class="ph ph-user-circle"></i> About Me</span>
+                <h2>Passionate about <span class="gradient-text">Code</span> & <span class="gradient-text">Security</span></h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-text" data-animate="fade-right">
+                    <p>
+                        I'm a developer who believes that the best software is born from understanding systems
+                        <strong>end-to-end</strong> — from the pixel-perfect frontend to the database query, and
+                        every vulnerability in between. My core stack revolves around <strong>Next.js</strong>,
+                        <strong>Nest.js</strong>, and <strong>TypeScript</strong>, which allows me to build
+                        full-stack applications that are both performant and maintainable.
+                    </p>
+                    <p>
+                        But my story doesn't stop at clean code. I'm deeply fascinated by what lies
+                        <em>beneath the surface</em> of applications. My passion for <strong>cybersecurity</strong>
+                        drives me to participate in <strong>CTF competitions</strong>, where I sharpen my skills in
+                        penetration testing, web exploitation, and creative problem-solving under pressure.
+                    </p>
+                    <p>
+                        Whether it's dissecting a DOM-based XSS vulnerability, crafting SSRF payloads, or shipping
+                        a production feature — I'm always learning, always building, and always looking for the next
+                        challenge. 🚀
+                    </p>
+                </div>
+                <div class="about-cards" data-animate="fade-left">
+                    <div class="info-card">
+                        <div class="card-icon">
+                            <i class="ph ph-code"></i>
+                        </div>
+                        <h3>Fullstack Dev</h3>
+                        <p>End-to-end web applications with modern TypeScript frameworks</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-icon">
+                            <i class="ph ph-chart-line-up"></i>
+                        </div>
+                        <h3>Data Science</h3>
+                        <p>Turning raw data into actionable insights and visual stories</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-icon">
+                            <i class="ph ph-shield-check"></i>
+                        </div>
+                        <h3>Cybersecurity</h3>
+                        <p>Penetration testing, web exploitation & CTF competitions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section section-dark" id="skills">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag"><i class="ph ph-wrench"></i> Tech Arsenal</span>
+                <h2>Skills & <span class="gradient-text">Technologies</span></h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category" data-animate="fade-up" data-delay="0">
+                    <div class="skill-category-header">
+                        <i class="ph ph-brackets-curly"></i>
+                        <h3>Languages & Frameworks</h3>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">Next.js</span>
+                        <span class="skill-tag">Nest.js</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">HTML5 / CSS3</span>
+                    </div>
+                </div>
+                <div class="skill-category" data-animate="fade-up" data-delay="100">
+                    <div class="skill-category-header">
+                        <i class="ph ph-database"></i>
+                        <h3>Data Science & Analytics</h3>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Data Analysis</span>
+                        <span class="skill-tag">Visualization</span>
+                        <span class="skill-tag">Statistical Modeling</span>
+                        <span class="skill-tag">Chart.js</span>
+                        <span class="skill-tag">D3.js</span>
+                        <span class="skill-tag">Data Pipelines</span>
+                    </div>
+                </div>
+                <div class="skill-category" data-animate="fade-up" data-delay="200">
+                    <div class="skill-category-header">
+                        <i class="ph ph-shield-warning"></i>
+                        <h3>Cybersecurity & Pentesting</h3>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="skill-tag tag-cyber">Kali Linux</span>
+                        <span class="skill-tag tag-cyber">Hydra</span>
+                        <span class="skill-tag tag-cyber">Exiftool</span>
+                        <span class="skill-tag tag-cyber">Burp Suite</span>
+                        <span class="skill-tag tag-cyber">OWASP Top 10</span>
+                        <span class="skill-tag tag-cyber">XSS / SSRF</span>
+                        <span class="skill-tag tag-cyber">CTF</span>
+                    </div>
+                </div>
+                <div class="skill-category" data-animate="fade-up" data-delay="300">
+                    <div class="skill-category-header">
+                        <i class="ph ph-gear-six"></i>
+                        <h3>DevOps & Tools</h3>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Git & GitHub</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Linux</span>
+                        <span class="skill-tag">CI/CD</span>
+                        <span class="skill-tag">VS Code</span>
+                        <span class="skill-tag">REST APIs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="section" id="experience">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag"><i class="ph ph-briefcase"></i> Career Path</span>
+                <h2>Professional <span class="gradient-text">Experience</span></h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item" data-animate="fade-right">
+                    <div class="timeline-marker">
+                        <i class="ph-fill ph-circle"></i>
+                    </div>
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <div>
+                                <h3>Fullstack Developer</h3>
+                                <span class="timeline-company">Current Role</span>
+                            </div>
+                            <span class="timeline-date">Present</span>
+                        </div>
+                        <p class="timeline-desc">
+                            Building production-grade web applications using <strong>Next.js</strong>,
+                            <strong>Nest.js</strong> and <strong>TypeScript</strong>. Designing comprehensive
+                            dashboard systems with advanced data visualizations, responsive layouts, and
+                            premium UI/UX for Fintech & AML compliance platforms.
+                        </p>
+                        <div class="timeline-tags">
+                            <span>Next.js</span>
+                            <span>Nest.js</span>
+                            <span>TypeScript</span>
+                            <span>Dashboard</span>
+                            <span>Fintech</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item" data-animate="fade-left">
+                    <div class="timeline-marker">
+                        <i class="ph-fill ph-circle"></i>
+                    </div>
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <div>
+                                <h3>Cybersecurity Practitioner & CTF Player</h3>
+                                <span class="timeline-company">Ongoing</span>
+                            </div>
+                            <span class="timeline-date">Ongoing</span>
+                        </div>
+                        <p class="timeline-desc">
+                            Active CTF competitor specializing in web exploitation challenges —
+                            including SSRF, XSS, deserialization, and command injection attacks.
+                            Continuously developing offensive security skills that directly
+                            inform more secure development practices.
+                        </p>
+                        <div class="timeline-tags">
+                            <span>Kali Linux</span>
+                            <span>Pentesting</span>
+                            <span>Web Exploits</span>
+                            <span>CTF</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section section-dark" id="projects">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag"><i class="ph ph-rocket-launch"></i> Portfolio</span>
+                <h2>Featured <span class="gradient-text">Projects</span></h2>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card" data-animate="fade-up" data-delay="0">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <span class="project-category">Fintech · Web App</span>
+                        </div>
+                        <div class="project-placeholder-visual">
+                            <i class="ph ph-chart-donut"></i>
+                        </div>
+                    </div>
+                    <div class="project-body">
+                        <h3>AML Compliance Dashboard</h3>
+                        <p>
+                            A premium operational dashboard for Fintech & AML teams. Features
+                            Monitoring Velocity charts, Risk Radar Profiling, Compliance Case Distribution
+                            donuts, and KYC Drop-off Funnels — all in a refined dark theme with glassmorphism.
+                        </p>
+                        <div class="project-stack">
+                            <span>Next.js</span>
+                            <span>TypeScript</span>
+                            <span>Chart.js</span>
+                            <span>Glassmorphism</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="ph ph-github-logo"></i> Code</a>
+                            <a href="#" class="project-link"><i class="ph ph-arrow-square-out"></i> Live Demo</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card" data-animate="fade-up" data-delay="150">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <span class="project-category">Security · Tools</span>
+                        </div>
+                        <div class="project-placeholder-visual">
+                            <i class="ph ph-terminal-window"></i>
+                        </div>
+                    </div>
+                    <div class="project-body">
+                        <h3>CTF Exploit Toolkit</h3>
+                        <p>
+                            A curated collection of scripts, payloads, and methodologies built during
+                            CTF competitions. Covers web exploitation (XSS, SSRF, deserialization),
+                            OSINT, metadata forensics, and brute-force strategies.
+                        </p>
+                        <div class="project-stack">
+                            <span>Python</span>
+                            <span>Bash</span>
+                            <span>Kali Linux</span>
+                            <span>Custom Payloads</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="ph ph-github-logo"></i> Code</a>
+                            <a href="#" class="project-link"><i class="ph ph-article"></i> Write-ups</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="section" id="education">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag"><i class="ph ph-graduation-cap"></i> Learning</span>
+                <h2>Education & <span class="gradient-text">Certifications</span></h2>
+            </div>
+            <div class="education-grid">
+                <div class="edu-card" data-animate="fade-up" data-delay="0">
+                    <div class="edu-icon">
+                        <i class="ph ph-graduation-cap"></i>
+                    </div>
+                    <div class="edu-content">
+                        <h3>Your Degree Title</h3>
+                        <p class="edu-school">Your University / School</p>
+                        <p class="edu-year">Graduation Year</p>
+                        <p class="edu-desc">Update this section with your actual degree, institution, and graduation year.</p>
+                    </div>
+                </div>
+                <div class="edu-card" data-animate="fade-up" data-delay="100">
+                    <div class="edu-icon">
+                        <i class="ph ph-medal"></i>
+                    </div>
+                    <div class="edu-content">
+                        <h3>Certifications</h3>
+                        <ul class="cert-list">
+                            <li><i class="ph ph-seal-check"></i> Your Certification #1 (e.g., CompTIA Security+)</li>
+                            <li><i class="ph ph-seal-check"></i> Your Certification #2 (e.g., AWS Certified)</li>
+                            <li><i class="ph ph-seal-check"></i> Your Certification #3 (e.g., OSCP)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Connect Section -->
+    <section class="section section-dark" id="connect">
+        <div class="container">
+            <div class="connect-content" data-animate="fade-up">
+                <span class="section-tag"><i class="ph ph-chat-circle-dots"></i> Get in Touch</span>
+                <h2>Let's Build Something <span class="gradient-text">Amazing</span> Together</h2>
+                <p class="connect-desc">
+                    I'm always open to collaborating on exciting projects, discussing cybersecurity,
+                    or just geeking out about tech. Whether you have a project in mind, a question,
+                    or just want to say hi — my inbox is always open.
+                </p>
+                <div class="connect-links">
+                    <a href="mailto:your.email@example.com" class="connect-card" data-animate="fade-up" data-delay="0">
+                        <i class="ph ph-envelope-simple"></i>
+                        <span class="connect-label">Email</span>
+                        <span class="connect-value">your.email@example.com</span>
+                    </a>
+                    <a href="https://linkedin.com/in/your-profile" target="_blank" class="connect-card" data-animate="fade-up" data-delay="100">
+                        <i class="ph ph-linkedin-logo"></i>
+                        <span class="connect-label">LinkedIn</span>
+                        <span class="connect-value">linkedin.com/in/your-profile</span>
+                    </a>
+                    <a href="https://github.com/your-username" target="_blank" class="connect-card" data-animate="fade-up" data-delay="200">
+                        <i class="ph ph-github-logo"></i>
+                        <span class="connect-label">GitHub</span>
+                        <span class="connect-value">github.com/your-username</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <p>&copy; 2026 <strong>Kader</strong>. Crafted with <span class="accent">❤️</span> and a lot of <span class="accent">☕</span></p>
+                <p class="footer-quote">"The best way to predict the future is to build it — and then pen-test it."</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
