@@ -1,0 +1,113 @@
+---
+import { useTranslations, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const facts = [
+  { label: t('about.label.based'), value: t('about.value.based') },
+  { label: t('about.label.role'), value: t('about.value.role') },
+  { label: t('about.label.focus'), value: t('about.value.focus') },
+];
+
+const stats = [
+  {
+    value: t('about.stat1.value'),
+    label: t('about.stat1.label'),
+    count: { to: 1, prefix: '+', suffix: lang === 'fr' ? ' an' : ' yr' },
+  },
+  {
+    value: t('about.stat2.value'),
+    label: t('about.stat2.label'),
+    count: { to: 3, prefix: '', suffix: '' },
+  },
+  { value: t('about.stat3.value'), label: t('about.stat3.label'), count: null },
+];
+---
+
+<section id="about" class="relative border-t border-line px-6 py-24 sm:px-10 lg:px-16 lg:py-32">
+  <div class="grid grid-cols-1 gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+    <div>
+      <p class="reveal mb-5 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-terracotta-deep">
+        <span class="reveal-stamp rounded-sm border border-terracotta-deep/40 px-1.5 py-0.5 text-[10px] text-terracotta-deep">N°01</span>
+        <span class="h-px w-8 bg-terracotta" aria-hidden="true"></span>
+        {t('about.kicker')}
+      </p>
+      <h2 class="reveal font-display text-2xl leading-[1.02] font-medium text-ink">
+        {t('about.title')}
+      </h2>
+
+      <dl class="reveal-group mt-10 space-y-5 border-t border-line pt-8">
+        {facts.map((fact) => (
+          <div class="reveal-item grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-sm">
+            <dt class="font-mono uppercase tracking-wide text-ink-soft">{fact.label}</dt>
+            <dd class="text-ink">{fact.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="reveal-group space-y-6 text-md text-ink-soft lg:pt-2">
+      <p class="reveal-item">{t('about.p1')}</p>
+      <p class="reveal-item">{t('about.p2')}</p>
+      <p class="reveal-item">{t('about.p3')}</p>
+    </div>
+  </div>
+
+  <div class="reveal-group mt-16 grid grid-cols-1 divide-y divide-line border-t border-b border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+    {stats.map((stat) => (
+      <div class="reveal-item px-0 py-6 sm:px-8 first:sm:pl-0 last:sm:pr-0">
+        <p
+          class="font-display text-xl font-medium text-terracotta-deep"
+          data-count-to={stat.count?.to}
+          data-count-prefix={stat.count?.prefix}
+          data-count-suffix={stat.count?.suffix}
+        >
+          {stat.value}
+        </p>
+        <p class="mt-1 text-sm text-ink-soft">{stat.label}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReducedMotion) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Same idea as animating a plain object and reading its live value on
+    // every tick — just via GSAP instead of a second animation library.
+    document.querySelectorAll<HTMLElement>('[data-count-to]').forEach((el) => {
+      const to = Number(el.dataset.countTo);
+      const prefix = el.dataset.countPrefix ?? '';
+      const suffix = el.dataset.countSuffix ?? '';
+      if (Number.isNaN(to)) return;
+
+      const counter = { value: 0 };
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 88%',
+        once: true,
+        onEnter: () => {
+          gsap.to(counter, {
+            value: to,
+            duration: 1.1,
+            ease: 'power2.out',
+            modifiers: { value: gsap.utils.snap(1) },
+            onUpdate: () => {
+              el.textContent = `${prefix}${counter.value}${suffix}`;
+            },
+          });
+        },
+      });
+    });
+  }
+</script>

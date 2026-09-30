@@ -1,0 +1,140 @@
+---
+import type { Project } from '../data/projects';
+import { useTranslations, type Lang } from '../i18n/utils';
+import Seal from './Seal.astro';
+import ArchitectureDiagram from './ArchitectureDiagram.astro';
+
+interface Props {
+  project: Project;
+  lang: Lang;
+  prevProject: Project;
+  nextProject: Project;
+}
+const { project, lang, prevProject, nextProject } = Astro.props;
+const t = useTranslations(lang);
+
+const homeHref = lang === 'fr' ? '/' : '/en/';
+const detailBase = lang === 'fr' ? '/ouvrages/' : '/en/work/';
+---
+
+<article class="px-6 py-20 sm:px-10 lg:px-16 lg:py-28">
+  <a
+    href={`${homeHref}#work`}
+    class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wide text-ink-soft transition-colors duration-200 hover:text-terracotta-deep"
+  >
+    <span aria-hidden="true">←</span> {t('project.back')}
+  </a>
+
+  <header class="mt-10 grid grid-cols-1 items-start gap-10 lg:grid-cols-[1.4fr_0.6fr] lg:gap-16">
+    <div class="reveal-group">
+      <p class="reveal-item flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-terracotta-deep">
+        <span>{project.domain[lang]}</span>
+        <span class="text-ink-soft" aria-hidden="true">·</span>
+        <span>{project.tag[lang]}</span>
+        <span class="text-ink-soft" aria-hidden="true">·</span>
+        <span>{project.year}</span>
+      </p>
+      <h1 class="reveal-item mt-4 font-display text-3xl leading-[0.98] font-medium text-ink">{project.title[lang]}</h1>
+      <p class="reveal-item mt-5 max-w-xl text-md text-ink-soft">{project.oneLiner[lang]}</p>
+
+      <p class="reveal-item mt-4 inline-flex items-center gap-2 rounded-full border border-sage/40 px-3 py-1.5 font-mono text-[11px] uppercase tracking-wide text-sage-darker">
+        {project.visibility === 'client' ? t('work.badge.client') : t('work.badge.personal')}
+      </p>
+
+      <div class="reveal-item mt-8 flex flex-wrap gap-4">
+        {project.links.demo && (
+          <a
+            href={project.links.demo}
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center gap-2 rounded-full bg-terracotta-deep px-5 py-2.5 font-body text-sm font-medium text-cream transition-colors duration-300 ease-atelier hover:bg-[#7a331c]"
+          >
+            {t('project.links.demo')} <span aria-hidden="true">↗</span>
+          </a>
+        )}
+        {project.links.repo && (
+          <a
+            href={project.links.repo}
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center gap-2 rounded-full border border-ink px-5 py-2.5 font-body text-sm font-medium text-ink transition-colors duration-300 ease-atelier hover:border-terracotta-deep hover:text-terracotta-deep"
+          >
+            {t('project.links.repo')} <span aria-hidden="true">↗</span>
+          </a>
+        )}
+      </div>
+    </div>
+
+    <div class="reveal paper-grain mx-auto w-full max-w-[220px] rounded-lg border border-line-strong bg-cream-card p-8 text-terracotta-deep/70 shadow-[6px_6px_0_0_var(--color-line-strong)] lg:mx-0">
+      {project.visibility === 'client' ? (
+        <ArchitectureDiagram n={project.diagram as 1 | 2 | 3} />
+      ) : (
+        <Seal n={project.seal as 1 | 2 | 3 | 4} />
+      )}
+    </div>
+  </header>
+
+  <div class="reveal-group mt-16 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
+    <div class="reveal-item space-y-10">
+      <div>
+        <h2 class="font-mono text-xs uppercase tracking-[0.2em] text-ink-soft">{t('work.field.problem')}</h2>
+        <p class="mt-3 text-md text-ink-soft">{project.problem[lang]}</p>
+      </div>
+      <div>
+        <h2 class="font-mono text-xs uppercase tracking-[0.2em] text-ink-soft">{t('work.field.contribution')}</h2>
+        <p class="mt-3 text-md text-ink-soft">{project.contribution[lang]}</p>
+      </div>
+    </div>
+
+    <div class="reveal-item space-y-10">
+      <div>
+        <h2 class="font-mono text-xs uppercase tracking-[0.2em] text-ink-soft">{t('work.field.highlights')}</h2>
+        <ul class="mt-3 space-y-3">
+          {project.highlights.map((h) => (
+            <li class="flex gap-3 text-md text-ink-soft">
+              <span class="mt-1 text-terracotta-deep" aria-hidden="true">—</span>
+              <span>{h[lang]}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h2 class="font-mono text-xs uppercase tracking-[0.2em] text-ink-soft">{t('work.field.stack')}</h2>
+        <div class="mt-3 flex flex-wrap gap-2">
+          {project.stack.map((s) => (
+            <span class="rounded-full border border-line-strong px-3 py-1 text-sm text-ink-soft">{s}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal mt-16 rounded-lg border border-line-strong bg-cream-card p-8 lg:p-10">
+    <h2 class="font-mono text-xs uppercase tracking-[0.2em] text-terracotta-deep">{t('work.field.result')}</h2>
+    <p class="mt-3 max-w-2xl font-display text-lg font-medium leading-snug text-ink">{project.result[lang]}</p>
+  </div>
+
+  <nav
+    class="mt-20 flex items-center justify-between gap-6 border-t border-line pt-8"
+    aria-label={lang === 'fr' ? 'Navigation entre projets' : 'Project navigation'}
+  >
+    <a
+      href={`${detailBase}${prevProject.slug}/`}
+      class="group flex flex-col gap-1 text-left"
+    >
+      <span class="font-mono text-[11px] uppercase tracking-wide text-ink-soft">←</span>
+      <span class="font-display text-md text-ink transition-colors duration-200 group-hover:text-terracotta-deep">
+        {prevProject.title[lang]}
+      </span>
+    </a>
+    <a
+      href={`${detailBase}${nextProject.slug}/`}
+      class="group flex flex-col items-end gap-1 text-right"
+    >
+      <span class="font-mono text-[11px] uppercase tracking-wide text-ink-soft">{t('project.next')} →</span>
+      <span class="font-display text-md text-ink transition-colors duration-200 group-hover:text-terracotta-deep">
+        {nextProject.title[lang]}
+      </span>
+    </a>
+  </nav>
+</article>

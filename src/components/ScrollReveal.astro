@@ -1,0 +1,70 @@
+---
+// Sitewide scroll choreography. Purely additive: elements are only ever
+// touched by GSAP if reduced-motion is off, so nothing needs a CSS
+// "hidden by default" state (no flash-of-invisible-content risk).
+---
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReducedMotion) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Simple fade + rise for standalone elements (section headers, asides).
+    gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
+      gsap.from(el, {
+        opacity: 0,
+        y: 28,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+      });
+    });
+
+    // Rubber-stamp entrance for the "N°0X" tags — scale + rotate snap,
+    // like a stamp hitting paper.
+    gsap.utils.toArray<HTMLElement>('.reveal-stamp').forEach((el) => {
+      gsap.from(el, {
+        opacity: 0,
+        scale: 1.6,
+        rotate: -12,
+        duration: 0.5,
+        ease: 'back.out(2.4)',
+        scrollTrigger: { trigger: el, start: 'top 92%', once: true },
+      });
+    });
+
+    // Staggered reveal for repeated children (timeline entries, tool rows,
+    // tag pills…). Mark the container `.reveal-group` and each direct
+    // child `.reveal-item`.
+    document.querySelectorAll<HTMLElement>('.reveal-group').forEach((group) => {
+      const items = group.querySelectorAll<HTMLElement>(':scope > .reveal-item');
+      if (!items.length) return;
+      gsap.from(items, {
+        opacity: 0,
+        y: 22,
+        duration: 0.7,
+        stagger: 0.09,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: group, start: 'top 85%', once: true },
+      });
+    });
+
+    // Opacity-only stagger — for items that already carry their own
+    // transform (e.g. the collage y-offset on project cards), so the
+    // reveal never fights an existing translate.
+    document.querySelectorAll<HTMLElement>('.reveal-group-fade').forEach((group) => {
+      const items = group.querySelectorAll<HTMLElement>(':scope > .reveal-item-fade');
+      if (!items.length) return;
+      gsap.from(items, {
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: group, start: 'top 85%', once: true },
+      });
+    });
+  }
+</script>

@@ -1,0 +1,46 @@
+---
+import { timeline } from '../data/timeline';
+import { useTranslations, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="timeline" class="relative border-t border-line px-6 py-24 sm:px-10 lg:px-16 lg:py-32">
+  <div class="max-w-xl">
+    <p class="reveal mb-5 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-terracotta-deep">
+      <span class="reveal-stamp rounded-sm border border-terracotta-deep/40 px-1.5 py-0.5 text-[10px] text-terracotta-deep">N°02</span>
+      <span class="h-px w-8 bg-terracotta" aria-hidden="true"></span>
+      {t('timeline.kicker')}
+    </p>
+    <h2 class="reveal font-display text-2xl leading-[1.02] font-medium text-ink">{t('timeline.title')}</h2>
+    <p class="reveal mt-4 text-md text-ink-soft">{t('timeline.intro')}</p>
+  </div>
+
+  <ol class="reveal-group relative mt-14 max-w-3xl border-l border-line pl-8 sm:pl-10">
+    {timeline.map((entry) => (
+      <li class="reveal-item relative pb-12 last:pb-0">
+        <span
+          class:list={[
+            'absolute -left-[calc(2rem+5px)] top-1 h-2.5 w-2.5 rounded-full border sm:-left-[calc(2.5rem+5px)]',
+            entry.current ? 'border-terracotta-deep bg-terracotta-deep' : 'border-line-strong bg-cream',
+          ]}
+          aria-hidden="true"
+        ></span>
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <span class="font-mono text-xs uppercase tracking-wide text-terracotta-deep">{entry.date[lang]}</span>
+          {entry.current && (
+            <span class="rounded-full border border-sage-deep/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-sage-deep">
+              {lang === 'fr' ? 'En cours' : 'Ongoing'}
+            </span>
+          )}
+        </div>
+        <h3 class="mt-2 font-display text-lg font-medium text-ink">{entry.title[lang]}</h3>
+        <p class="mt-2 max-w-xl text-sm text-ink-soft">{entry.body[lang]}</p>
+      </li>
+    ))}
+  </ol>
+</section>

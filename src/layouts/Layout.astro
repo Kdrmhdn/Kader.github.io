@@ -1,0 +1,57 @@
+---
+import '../styles/global.css';
+import { getLangFromUrl, useTranslations, getAlternatePath } from '../i18n/utils';
+import ScrollReveal from '../components/ScrollReveal.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const { title = t('meta.title'), description = t('meta.description'), ogImage = '/og-image.png' } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const alternateEn = getAlternatePath(lang, 'en', Astro.url.pathname);
+const alternateFr = getAlternatePath(lang, 'fr', Astro.url.pathname);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="fr" href={new URL(alternateFr, Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(alternateEn, Astro.site)} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+
+    <meta name="theme-color" content="#f1e9da" />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body class="bg-cream text-ink font-body antialiased selection:bg-terracotta selection:text-cream">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-cream"
+    >
+      {lang === 'fr' ? 'Aller au contenu' : 'Skip to content'}
+    </a>
+    <slot />
+    <ScrollReveal />
+  </body>
+</html>

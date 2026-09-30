@@ -1,0 +1,49 @@
+---
+import { social } from '../data/social';
+import { useTranslations, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const links = [
+  social.email && { label: t('contact.cta.email'), href: `mailto:${social.email}` },
+  social.linkedin && { label: t('contact.cta.linkedin'), href: social.linkedin },
+  social.github && { label: t('contact.cta.github'), href: social.github },
+  social.cvUrl && { label: t('contact.cta.cv'), href: social.cvUrl },
+].filter(Boolean) as { label: string; href: string }[];
+---
+
+<section id="contact" class="relative border-t border-line px-6 py-24 sm:px-10 lg:px-16 lg:py-36">
+  <div class="max-w-3xl">
+    <p class="reveal mb-5 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-terracotta-deep">
+      <span class="reveal-stamp rounded-sm border border-terracotta-deep/40 px-1.5 py-0.5 text-[10px] text-terracotta-deep">N°07</span>
+      <span class="h-px w-8 bg-terracotta" aria-hidden="true"></span>
+      {t('contact.kicker')}
+    </p>
+    <h2 class="reveal font-display text-2xl leading-[1.05] font-medium text-ink lg:text-3xl">
+      {t('contact.title')}
+    </h2>
+    <p class="reveal mt-5 text-md text-ink-soft">{t('contact.subtitle')}</p>
+    <p class="reveal mt-2 font-mono text-xs uppercase tracking-wide text-ink-soft">{t('contact.availability')}</p>
+
+    {links.length > 0 && (
+      <div class="reveal-group mt-12 flex flex-wrap gap-4">
+        {links.map((link, i) => (
+          <a
+            href={link.href}
+            class={
+              i === 0
+                ? 'reveal-item inline-flex items-center gap-3 rounded-full bg-terracotta-deep px-6 py-3 font-body text-sm font-medium text-cream transition-colors duration-300 ease-atelier hover:bg-[#7a331c]'
+                : 'reveal-item inline-flex items-center gap-3 rounded-full border border-ink px-6 py-3 font-body text-sm font-medium text-ink transition-colors duration-300 ease-atelier hover:border-terracotta-deep hover:text-terracotta-deep'
+            }
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</section>

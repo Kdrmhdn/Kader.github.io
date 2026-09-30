@@ -1,0 +1,200 @@
+---
+import { projects } from '../data/projects';
+import { social } from '../data/social';
+import { useTranslations, type Lang } from '../i18n/utils';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const offsets: Array<'up' | 'down' | 'none'> = ['none', 'down', 'up'];
+---
+
+<section id="work" class="relative border-t border-line py-24 sm:py-28 lg:py-32">
+  <div class="px-6 sm:px-10 lg:px-16">
+    <p class="reveal mb-5 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-terracotta-deep">
+      <span class="reveal-stamp rounded-sm border border-terracotta-deep/40 px-1.5 py-0.5 text-[10px] text-terracotta-deep">N°03</span>
+      <span class="h-px w-8 bg-terracotta" aria-hidden="true"></span>
+      {t('work.kicker')}
+    </p>
+    <h2 class="reveal font-display text-2xl leading-[1.02] font-medium text-ink">{t('work.title')}</h2>
+    <p class="reveal mt-4 max-w-xl text-md text-ink-soft">{t('work.intro')}</p>
+  </div>
+
+  <div id="work-viewport" class="mt-16 cursor-grab overflow-hidden active:cursor-grabbing">
+    <div id="work-track" class="reveal-group-fade flex gap-6 pl-6 sm:gap-8 sm:pl-10 lg:pl-16" style="width: max-content;">
+      {projects.map((project, i) => (
+        <ProjectCard project={project} lang={lang} offset={offsets[i % offsets.length]} />
+      ))}
+      <a
+        href={social.github || '#contact'}
+        target={social.github ? '_blank' : undefined}
+        rel={social.github ? 'noreferrer' : undefined}
+        class="project-card reveal-item-fade group flex shrink-0 flex-col items-start justify-center gap-4 rounded-lg border border-dashed border-line-strong p-8 text-ink transition-colors duration-300 ease-atelier hover:border-terracotta-deep hover:text-terracotta-deep lg:translate-y-6"
+        style="width: min(82vw, 320px); aspect-ratio: 3 / 4.3;"
+      >
+        <span class="font-mono text-[11px] uppercase tracking-widest text-ink-soft group-hover:text-terracotta-deep">
+          {lang === 'fr' ? 'Tiroir suivant' : 'Next drawer'}
+        </span>
+        <p class="font-display text-lg leading-tight">
+          {lang === 'fr' ? "D'autres pièces sont sur mon GitHub." : 'More pieces live on my GitHub.'}
+        </p>
+        <span class="mt-auto inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wide">
+          {lang === 'fr' ? 'Explorer' : 'Explore'}
+          <span class="transition-transform duration-300 ease-atelier group-hover:translate-x-1" aria-hidden="true">→</span>
+        </span>
+      </a>
+      <div class="shrink-0" style="width: 1px;" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="mt-8 flex flex-wrap items-center gap-4 px-6 sm:px-10 lg:px-16">
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        id="work-prev"
+        aria-label={t('work.prev')}
+        class="flex h-11 w-11 items-center justify-center rounded-full border border-ink text-ink transition-colors duration-200 hover:border-terracotta-deep hover:text-terracotta-deep disabled:opacity-30"
+      >
+        ←
+      </button>
+      <button
+        type="button"
+        id="work-next"
+        aria-label={t('work.next')}
+        class="flex h-11 w-11 items-center justify-center rounded-full border border-ink text-ink transition-colors duration-200 hover:border-terracotta-deep hover:text-terracotta-deep disabled:opacity-30"
+      >
+        →
+      </button>
+    </div>
+    <span class="font-mono text-[11px] uppercase tracking-widest text-ink-soft">
+      {lang === 'fr' ? 'Glisser pour parcourir' : 'Drag to browse'}
+    </span>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { Draggable } from 'gsap/Draggable';
+  import { InertiaPlugin } from 'gsap/InertiaPlugin';
+
+  gsap.registerPlugin(Draggable, InertiaPlugin);
+  gsap.registerEase('atelier', (p: number) => 1 - Math.pow(1 - p, 3));
+
+  const viewport = document.getElementById('work-viewport');
+  const track = document.getElementById('work-track');
+  const prevBtn = document.getElementById('work-prev') as HTMLButtonElement | null;
+  const nextBtn = document.getElementById('work-next') as HTMLButtonElement | null;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FADE = 48; // px
+
+  if (viewport && track) {
+    const cards = Array.from(track.querySelectorAll<HTMLElement>('.project-card'));
+    const step = () => (cards[1]?.offsetLeft ?? 0) - (cards[0]?.offsetLeft ?? 0);
+
+    let bounds = { minX: 0, maxX: 0 };
+    const computeBounds = () => {
+      const maxScroll = Math.max(0, track.scrollWidth - viewport.clientWidth);
+      bounds = { minX: -maxScroll, maxX: 0 };
+    };
+    computeBounds();
+    window.addEventListener('resize', computeBounds);
+
+    let draggable: Draggable | undefined;
+    if (!prefersReducedMotion) {
+      const [instance] = Draggable.create(track, {
+        type: 'x',
+        bounds: viewport,
+        inertia: true,
+        edgeResistance: 0.7,
+        dragClickables: false,
+        onDrag: updateState,
+        onThrowComplete: updateState,
+      });
+      draggable = instance;
+    }
+
+    function currentX() {
+      return draggable ? draggable.x : 0;
+    }
+
+    function goTo(x: number) {
+      const clamped = Math.min(bounds.maxX, Math.max(bounds.minX, x));
+      if (draggable) {
+        gsap.to(track, {
+          x: clamped,
+          duration: 0.7,
+          ease: 'atelier',
+          onUpdate: () => {
+            draggable && draggable.update();
+            updateState();
+          },
+        });
+      } else if (viewport) {
+        track.style.transform = `translateX(${clamped}px)`;
+        updateState();
+      }
+    }
+
+    function updateState() {
+      if (!viewport) return;
+      const x = currentX();
+      const atStart = x >= bounds.maxX - 1;
+      const atEnd = x <= bounds.minX + 1;
+
+      if (prevBtn) prevBtn.disabled = atStart;
+      if (nextBtn) nextBtn.disabled = atEnd;
+
+      const leftStop = atStart ? '0px' : `${FADE}px`;
+      const rightStop = atEnd ? '100%' : `calc(100% - ${FADE}px)`;
+      const mask = `linear-gradient(to right, transparent 0, black ${leftStop}, black ${rightStop}, transparent 100%)`;
+      viewport.style.maskImage = mask;
+      viewport.style.setProperty('-webkit-mask-image', mask);
+    }
+
+    prevBtn?.addEventListener('click', () => goTo(currentX() + step()));
+    nextBtn?.addEventListener('click', () => goTo(currentX() - step()));
+
+    updateState();
+  }
+
+  // --- Card flip ---
+  const flipCards = document.querySelectorAll<HTMLElement>('.project-card .card-inner');
+  flipCards.forEach((inner) => {
+    const triggers = inner.querySelectorAll<HTMLButtonElement>('.card-flip-trigger');
+    const front = inner.querySelector<HTMLElement>('[data-face="front"]');
+    const back = inner.querySelector<HTMLElement>('[data-face="back"]');
+    let flipped = false;
+
+    const setFlipped = (value: boolean) => {
+      flipped = value;
+      if (prefersReducedMotion) {
+        inner.style.transform = flipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+      } else {
+        gsap.to(inner, {
+          rotationY: flipped ? 180 : 0,
+          duration: 0.65,
+          ease: 'power3.inOut',
+        });
+      }
+      triggers.forEach((btn) => btn.setAttribute('aria-expanded', String(flipped)));
+      if (flipped) {
+        front?.setAttribute('inert', '');
+        back?.removeAttribute('inert');
+        back?.querySelector<HTMLButtonElement>('.card-flip-trigger')?.focus();
+      } else {
+        back?.setAttribute('inert', '');
+        front?.removeAttribute('inert');
+        front?.querySelector<HTMLButtonElement>('.card-flip-trigger')?.focus();
+      }
+    };
+
+    triggers.forEach((btn) => {
+      btn.addEventListener('click', () => setFlipped(!flipped));
+    });
+  });
+</script>

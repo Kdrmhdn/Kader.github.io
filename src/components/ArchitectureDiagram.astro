@@ -1,0 +1,53 @@
+---
+// Abstract architecture diagram — stands in for a real screenshot on
+// confidential client work. Purely geometric (nodes + connectors), no
+// literal system details, consistent with the Seal mark's line-art style.
+interface Props {
+  n: 1 | 2 | 3;
+  class?: string;
+}
+const { n, class: className = '' } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 200 200"
+  class={`h-full w-full ${className}`}
+  aria-hidden="true"
+  role="presentation"
+>
+  {n === 1 && (
+    // linear pipeline: ingest → transform → index → answer
+    <g fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M34 100 H166" stroke-dasharray="2 6" stroke-width="1" opacity="0.5" />
+      <rect x="20" y="86" width="28" height="28" rx="3" />
+      <rect x="86" y="86" width="28" height="28" rx="3" />
+      <rect x="152" y="86" width="28" height="28" rx="3" />
+      <circle cx="100" cy="140" r="3" fill="currentColor" stroke="none" />
+      <path d="M100 114 V137" stroke-width="1" opacity="0.6" />
+    </g>
+  )}
+  {n === 2 && (
+    // hub and satellites: coordinator + specialist agents
+    <g fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M100 100 L60 60 M100 100 L140 60 M100 100 L100 150" stroke-width="1" opacity="0.5" />
+      <circle cx="100" cy="100" r="16" />
+      <circle cx="60" cy="60" r="10" stroke-dasharray="2 4" />
+      <circle cx="140" cy="60" r="10" stroke-dasharray="2 4" />
+      <circle cx="100" cy="150" r="10" stroke-dasharray="2 4" />
+    </g>
+  )}
+  {n === 3 && (
+    // branching generation: brief → structured sections
+    <g fill="none" stroke="currentColor" stroke-width="1.5">
+      <path
+        d="M40 60 H90 M90 60 V40 H150 M90 60 V80 H150 M90 60 V100 H150 M90 60 V120 H150"
+        stroke-width="1"
+        opacity="0.5"
+      />
+      <circle cx="30" cy="60" r="10" />
+      <rect x="150" y="32" width="20" height="16" rx="2" />
+      <rect x="150" y="72" width="20" height="16" rx="2" />
+      <rect x="150" y="112" width="20" height="16" rx="2" stroke-dasharray="2 4" />
+    </g>
+  )}
+</svg>

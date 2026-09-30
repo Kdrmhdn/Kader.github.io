@@ -1,0 +1,54 @@
+---
+// A quiet "ticker tape" band — literal scrolling text, kept restrained
+// (small type, muted tone) so it reads as a workshop label strip rather
+// than a marketing marquee. Pure CSS loop: no JS, respects
+// prefers-reduced-motion via the media query below.
+interface Props {
+  lang: 'fr' | 'en';
+}
+const { lang } = Astro.props;
+
+const items =
+  lang === 'fr'
+    ? ['RAG', 'SYSTÈMES MULTI-AGENTS', 'RÉCUPÉRATION', 'ORCHESTRATION LLM', 'SÉCURITÉ APPLICATIVE', 'PYTHON', 'TYPESCRIPT']
+    : ['RAG', 'MULTI-AGENT SYSTEMS', 'RETRIEVAL', 'LLM ORCHESTRATION', 'APPLICATION SECURITY', 'PYTHON', 'TYPESCRIPT'];
+---
+
+<div class="ticker relative overflow-hidden border-y border-line py-3" aria-hidden="true">
+  <div class="ticker-track flex w-max items-center">
+    {[0, 1].map(() => (
+      <ul class="flex shrink-0 items-center">
+        {items.map((item) => (
+          <li class="flex items-center">
+            <span class="px-4 font-mono text-xs uppercase tracking-[0.15em] text-ink-soft">{item}</span>
+            <span class="text-terracotta-deep">·</span>
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</div>
+
+<style>
+  .ticker-track {
+    animation: ticker-scroll 32s linear infinite;
+  }
+
+  @keyframes ticker-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track {
+      animation: none;
+    }
+    .ticker {
+      overflow-x: auto;
+    }
+  }
+</style>

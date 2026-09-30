@@ -1,0 +1,29 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ProjectDetail from '../../components/ProjectDetail.astro';
+import { projects } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project, i) => ({
+    params: { slug: project.slug },
+    props: {
+      project,
+      prevProject: projects[(i - 1 + projects.length) % projects.length],
+      nextProject: projects[(i + 1) % projects.length],
+    },
+  }));
+}
+
+const { project, prevProject, nextProject } = Astro.props;
+const lang = 'fr' as const;
+---
+
+<Layout title={`${project.title[lang]} — Kader`} description={project.oneLiner[lang]}>
+  <Header lang={lang} langSwitchPath={`/en/work/${project.slug}/`} />
+  <main id="main" class="pl-11 sm:pl-12 md:pl-14">
+    <ProjectDetail project={project} lang={lang} prevProject={prevProject} nextProject={nextProject} />
+    <Footer lang={lang} />
+  </main>
+</Layout>

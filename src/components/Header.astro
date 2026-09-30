@@ -1,0 +1,100 @@
+---
+import { useTranslations, getAlternatePath, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  /** Override the language-switch target (needed on routes the generic
+   * path-prefix swap can't handle, e.g. project detail pages). */
+  langSwitchPath?: string;
+}
+const { lang, langSwitchPath } = Astro.props;
+const t = useTranslations(lang);
+
+const homeHref = lang === 'fr' ? '/' : '/en/';
+
+const tabs = [
+  { id: 'about', label: t('nav.about') },
+  { id: 'work', label: t('nav.work') },
+  { id: 'security', label: t('nav.security') },
+  { id: 'stack', label: t('nav.stack') },
+  { id: 'contact', label: t('nav.contact') },
+];
+
+const otherLang: Lang = lang === 'fr' ? 'en' : 'fr';
+const otherPath = langSwitchPath ?? getAlternatePath(lang, otherLang, Astro.url.pathname);
+---
+
+<header
+  id="site-rail"
+  class="fixed inset-y-0 left-0 z-50 flex w-11 flex-col items-center justify-between border-r border-line bg-cream-card/95 backdrop-blur-sm sm:w-12 md:w-14"
+>
+  <a
+    href={homeHref}
+    class="group flex h-11 w-full items-center justify-center border-b border-line sm:h-12 md:h-14"
+    aria-label={lang === 'fr' ? "K. — retour à l'accueil" : 'K. — back to top'}
+  >
+    <span class="font-display text-lg font-medium text-terracotta-deep transition-transform duration-300 ease-atelier group-hover:-rotate-12 md:text-xl">K.</span>
+  </a>
+
+  <nav aria-label={lang === 'fr' ? 'Sections' : 'Sections'} class="flex flex-1 flex-col items-center">
+    <ul class="flex flex-1 flex-col items-center justify-center gap-1 py-4">
+      {tabs.map((tab) => (
+        <li class="w-full">
+          <a
+            href={`${homeHref}#${tab.id}`}
+            data-tab={tab.id}
+            class="nav-tab group relative flex w-full items-center justify-center py-4 text-ink-soft transition-colors duration-300 ease-atelier hover:text-terracotta-deep"
+          >
+            <span
+              class="text-xs font-medium tracking-[0.15em] uppercase"
+              style="writing-mode: vertical-rl; transform: rotate(180deg);"
+            >
+              {tab.label}
+            </span>
+            <span class="nav-tab-dot absolute right-1.5 top-1.5 h-1 w-1 rounded-full bg-terracotta opacity-0 transition-opacity duration-300" aria-hidden="true"></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <div class="flex flex-col items-center gap-3 border-t border-line py-4">
+    <a
+      href={otherPath}
+      class="rounded border border-line-strong px-1.5 py-1 font-mono text-[10px] font-medium tracking-wide text-ink-soft transition-colors duration-200 hover:border-terracotta-deep hover:text-terracotta-deep"
+      aria-label={lang === 'fr' ? 'Passer en anglais' : 'Switch to French'}
+    >
+      {otherLang.toUpperCase()}
+    </a>
+  </div>
+</header>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll<HTMLAnchorElement>('.nav-tab'));
+  const sections = tabs
+    .map((tab) => document.getElementById(tab.dataset.tab || ''))
+    .filter((el): el is HTMLElement => !!el);
+
+  if (sections.length && 'IntersectionObserver' in window) {
+    const setActive = (id: string) => {
+      tabs.forEach((tab) => {
+        const isActive = tab.dataset.tab === id;
+        tab.classList.toggle('text-terracotta-deep', isActive);
+        tab.setAttribute('aria-current', isActive ? 'true' : 'false');
+        const dot = tab.querySelector('.nav-tab-dot');
+        dot?.classList.toggle('opacity-100', isActive);
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  }
+</script>

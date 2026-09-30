@@ -1,0 +1,112 @@
+---
+import { useTranslations, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section
+  id="hero"
+  class="relative flex min-h-svh flex-col justify-center overflow-hidden px-6 py-20 sm:px-10 lg:px-16"
+>
+  <div class="grid grid-cols-1 items-center gap-16 lg:grid-cols-[1.3fr_0.7fr]">
+    <div class="reveal-group max-w-2xl">
+      <p class="reveal-item mb-5 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-terracotta-deep">
+        <span class="h-px w-8 bg-terracotta" aria-hidden="true"></span>
+        {t('hero.kicker')}
+      </p>
+
+      <h1 id="hero-title" class="font-display text-3xl leading-[0.98] font-medium text-ink">
+        {t('hero.title.line1')} {t('hero.title.line2')}
+        <span class="block text-terracotta italic">{t('hero.title.line3')}</span>
+      </h1>
+
+      <p class="reveal-item mt-6 max-w-md text-md text-ink-soft">
+        {t('hero.subtitle')}
+      </p>
+
+      <div class="reveal-item mt-8">
+        <a
+          href="#work"
+          class="group inline-flex items-center gap-3 rounded-full border border-ink px-6 py-3 font-body text-sm font-medium text-ink transition-colors duration-300 ease-atelier hover:border-terracotta-deep hover:bg-terracotta-deep hover:text-cream"
+        >
+          {t('hero.cta')}
+          <span class="transition-transform duration-300 ease-atelier group-hover:translate-x-1" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="reveal relative mx-auto hidden w-full max-w-[220px] sm:block lg:max-w-[260px]">
+      <div
+        id="hero-teaser-card"
+        class="paper-grain aspect-[3/4] overflow-hidden rounded-lg border border-line-strong bg-cream-card shadow-[6px_6px_0_0_var(--color-line-strong)]"
+        style="will-change: transform;"
+      >
+        <img
+          src="/images/kader-portrait.webp"
+          alt={lang === 'fr' ? 'Portrait de Kader' : 'Portrait of Kader'}
+          class="h-full w-full object-cover"
+          width="900"
+          height="1201"
+        />
+      </div>
+      <p class="mt-4 text-center font-mono text-[11px] uppercase tracking-widest text-ink-soft">
+        {lang === 'fr' ? 'Alger, 2025' : 'Algiers, 2025'}
+      </p>
+    </div>
+  </div>
+
+  <div class="pointer-events-none absolute bottom-10 left-6 hidden items-center gap-3 sm:left-10 sm:flex lg:left-16">
+    <span class="h-10 w-px bg-ink-soft/40" aria-hidden="true"></span>
+    <span
+      class="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-soft"
+      style="writing-mode: vertical-rl;"
+    >
+      {t('hero.scroll')}
+    </span>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { SplitText } from 'gsap/SplitText';
+
+  const card = document.getElementById('hero-teaser-card');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  const title = document.getElementById('hero-title');
+  if (title && !prefersReducedMotion) {
+    gsap.registerPlugin(SplitText);
+    const split = new SplitText(title, { type: 'lines', mask: 'lines', linesClass: 'hero-line' });
+    gsap.from(split.lines, {
+      yPercent: 110,
+      duration: 0.9,
+      stagger: 0.09,
+      ease: 'power3.out',
+      delay: 0.15,
+    });
+  }
+
+  if (card && !prefersReducedMotion && canHover) {
+    const xTo = gsap.quickTo(card, 'rotationY', { duration: 0.6, ease: 'power3.out' });
+    const yTo = gsap.quickTo(card, 'rotationX', { duration: 0.6, ease: 'power3.out' });
+    gsap.set(card, { transformPerspective: 800, transformOrigin: 'center' });
+
+    const wrapper = card.parentElement;
+    wrapper?.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      xTo(px * 24);
+      yTo(py * -24);
+    });
+    wrapper?.addEventListener('mouseleave', () => {
+      xTo(0);
+      yTo(0);
+    });
+  }
+</script>

@@ -1,0 +1,39 @@
+---
+import { stack } from '../data/stack';
+import { useTranslations, type Lang } from '../i18n/utils';
+import ProcessSteps from './ProcessSteps.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="stack" class="relative border-t border-line px-6 py-24 sm:px-10 lg:px-16 lg:py-32">
+  <div class="max-w-xl">
+    <p class="reveal mb-5 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-terracotta-deep">
+      <span class="reveal-stamp rounded-sm border border-terracotta-deep/40 px-1.5 py-0.5 text-[10px] text-terracotta-deep">N°05</span>
+      <span class="h-px w-8 bg-terracotta" aria-hidden="true"></span>
+      {t('stack.kicker')}
+    </p>
+    <h2 class="reveal font-display text-2xl leading-[1.02] font-medium text-ink">{t('stack.title')}</h2>
+    <p class="reveal mt-4 text-md text-ink-soft">{t('stack.intro')}</p>
+  </div>
+
+  <div class="mt-16">
+    <ProcessSteps lang={lang} />
+  </div>
+
+  <ul class="reveal-group divide-y divide-line border-t border-b border-line">
+    {stack.map((entry) => (
+      <li class="reveal-item group grid grid-cols-1 gap-2 py-6 sm:grid-cols-[1fr_1fr_2fr] sm:items-baseline sm:gap-8">
+        <span class="font-display text-lg text-ink transition-colors duration-300 ease-atelier group-hover:text-terracotta-deep">
+          {entry.name}
+        </span>
+        <span class="font-mono text-xs uppercase tracking-wide text-sage-deep">{entry.category[lang]}</span>
+        <span class="text-sm text-ink-soft">{entry.note[lang]}</span>
+      </li>
+    ))}
+  </ul>
+</section>

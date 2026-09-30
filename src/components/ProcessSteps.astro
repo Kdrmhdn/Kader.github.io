@@ -1,0 +1,32 @@
+---
+import { processSteps } from '../data/process';
+import { useTranslations, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div class="mb-16">
+  <h3 class="reveal font-mono text-xs uppercase tracking-[0.2em] text-ink-soft">{t('stack.process.title')}</h3>
+
+  <ol class="reveal-group-fade relative mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+    <div
+      class="pointer-events-none absolute top-5 right-0 left-0 hidden border-t border-dashed border-line-strong lg:block"
+      aria-hidden="true"
+    ></div>
+    {processSteps.map((step) => (
+      <li class="reveal-item-fade relative flex flex-col gap-3">
+        <span
+          class="reveal-stamp relative z-10 flex h-10 w-10 items-center justify-center rounded-full border border-terracotta-deep bg-cream font-mono text-xs text-terracotta-deep"
+        >
+          {step.n}
+        </span>
+        <h4 class="font-display text-md font-medium text-ink">{step.title[lang]}</h4>
+        <p class="text-sm text-ink-soft">{step.body[lang]}</p>
+      </li>
+    ))}
+  </ol>
+</div>

@@ -1,0 +1,32 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Hero from '../../components/Hero.astro';
+import Ticker from '../../components/Ticker.astro';
+import About from '../../components/About.astro';
+import Timeline from '../../components/Timeline.astro';
+import Work from '../../components/Work.astro';
+import Security from '../../components/Security.astro';
+import Stack from '../../components/Stack.astro';
+import Now from '../../components/Now.astro';
+import Contact from '../../components/Contact.astro';
+import Footer from '../../components/Footer.astro';
+
+const lang = 'en' as const;
+---
+
+<Layout>
+  <Header lang={lang} />
+  <main id="main" class="pl-11 sm:pl-12 md:pl-14">
+    <Hero lang={lang} />
+    <Ticker lang={lang} />
+    <About lang={lang} />
+    <Timeline lang={lang} />
+    <Work lang={lang} />
+    <Security lang={lang} />
+    <Stack lang={lang} />
+    <Now lang={lang} />
+    <Contact lang={lang} />
+    <Footer lang={lang} />
+  </main>
+</Layout>

@@ -1,0 +1,21 @@
+---
+import { useTranslations, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="security" class="relative border-t border-line bg-ink px-6 py-20 text-cream sm:px-10 lg:px-16 lg:py-24">
+  <div class="max-w-2xl">
+    <p class="reveal mb-5 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-terracotta-light">
+      <span class="reveal-stamp rounded-sm border border-terracotta-light/40 px-1.5 py-0.5 text-[10px] text-terracotta-light">N°04</span>
+      <span class="h-px w-8 bg-terracotta-light" aria-hidden="true"></span>
+      {t('security.kicker')}
+    </p>
+    <h2 class="reveal font-display text-xl leading-[1.1] font-medium text-cream">{t('security.title')}</h2>
+    <p class="reveal mt-4 text-md text-cream/75">{t('security.intro')}</p>
+  </div>
+</section>
