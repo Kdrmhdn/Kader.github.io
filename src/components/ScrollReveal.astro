@@ -67,4 +67,28 @@
       });
     });
   }
+
+  // Magnetic pull on primary buttons/links — a subtle draw toward the
+  // cursor while hovering, snapping back on leave. Desktop-with-a-mouse
+  // only; skipped entirely under reduced motion.
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (!prefersReducedMotion && canHover) {
+    gsap.utils.toArray<HTMLElement>('.magnetic').forEach((el) => {
+      const xTo = gsap.quickTo(el, 'x', { duration: 0.4, ease: 'power3.out' });
+      const yTo = gsap.quickTo(el, 'y', { duration: 0.4, ease: 'power3.out' });
+
+      el.addEventListener('mousemove', (e) => {
+        if ((el as HTMLButtonElement).disabled) return;
+        const rect = el.getBoundingClientRect();
+        const relX = (e as MouseEvent).clientX - rect.left - rect.width / 2;
+        const relY = (e as MouseEvent).clientY - rect.top - rect.height / 2;
+        xTo(relX * 0.3);
+        yTo(relY * 0.3);
+      });
+      el.addEventListener('mouseleave', () => {
+        xTo(0);
+        yTo(0);
+      });
+    });
+  }
 </script>

@@ -51,13 +51,24 @@ const offsets: Array<'up' | 'down' | 'none'> = ['none', 'down', 'up'];
     </div>
   </div>
 
+  <div
+    id="work-cursor"
+    class="pointer-events-none fixed top-0 left-0 z-[60] flex items-center gap-1.5 rounded-full bg-ink px-3 py-1.5 font-mono text-[10px] uppercase tracking-wide text-cream opacity-0"
+    style="will-change: transform;"
+    aria-hidden="true"
+  >
+    <span aria-hidden="true">‹</span>
+    {lang === 'fr' ? 'glisser' : 'drag'}
+    <span aria-hidden="true">›</span>
+  </div>
+
   <div class="mt-8 flex flex-wrap items-center gap-4 px-6 sm:px-10 lg:px-16">
     <div class="flex items-center gap-3">
       <button
         type="button"
         id="work-prev"
         aria-label={t('work.prev')}
-        class="flex h-11 w-11 items-center justify-center rounded-full border border-ink text-ink transition-colors duration-200 hover:border-terracotta-deep hover:text-terracotta-deep disabled:opacity-30"
+        class="magnetic flex h-11 w-11 items-center justify-center rounded-full border border-ink text-ink transition-colors duration-200 hover:border-terracotta-deep hover:text-terracotta-deep disabled:opacity-30"
       >
         ←
       </button>
@@ -65,7 +76,7 @@ const offsets: Array<'up' | 'down' | 'none'> = ['none', 'down', 'up'];
         type="button"
         id="work-next"
         aria-label={t('work.next')}
-        class="flex h-11 w-11 items-center justify-center rounded-full border border-ink text-ink transition-colors duration-200 hover:border-terracotta-deep hover:text-terracotta-deep disabled:opacity-30"
+        class="magnetic flex h-11 w-11 items-center justify-center rounded-full border border-ink text-ink transition-colors duration-200 hover:border-terracotta-deep hover:text-terracotta-deep disabled:opacity-30"
       >
         →
       </button>
@@ -197,4 +208,29 @@ const offsets: Array<'up' | 'down' | 'none'> = ['none', 'down', 'up'];
       btn.addEventListener('click', () => setFlipped(!flipped));
     });
   });
+
+  // --- Custom "drag" cursor over the filmstrip ---
+  const cursor = document.getElementById('work-cursor');
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (viewport && cursor && !prefersReducedMotion && canHover) {
+    const cx = gsap.quickTo(cursor, 'x', { duration: 0.25, ease: 'power3.out' });
+    const cy = gsap.quickTo(cursor, 'y', { duration: 0.25, ease: 'power3.out' });
+    let visible = false;
+
+    viewport.addEventListener('mousemove', (e) => {
+      cx(e.clientX + 16);
+      cy(e.clientY + 16);
+      if (!visible) {
+        visible = true;
+        gsap.to(cursor, { opacity: 1, duration: 0.2 });
+        viewport.style.cursor = 'none';
+      }
+    });
+    viewport.addEventListener('mouseleave', () => {
+      visible = false;
+      gsap.to(cursor, { opacity: 0, duration: 0.2 });
+      viewport.style.cursor = '';
+    });
+  }
 </script>
